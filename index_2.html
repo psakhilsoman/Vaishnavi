@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff6f3">
+  <title>Happy Birthday, Vaishnavi</title>
+  <meta name="description" content="A birthday wish for Vaishnavi, with a photo to put back together.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Great+Vibes&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #3c2430;
+      --muted: #7d5b67;
+      --rose: #d83b78;
+      --rose-deep: #9d2158;
+      --blush: #ffd9e6;
+      --sage: #6ea18d;
+      --sage-soft: #e5f3ec;
+      --cream: #fff6f3;
+      --paper: rgba(255, 252, 250, 0.86);
+      --gold: #b8893d;
+      --line: rgba(60, 36, 48, 0.12);
+      --shadow: 0 18px 50px rgba(90, 30, 55, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "Outfit", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 600px at 50% -10%, #ffe3ee 0%, transparent 60%),
+        radial-gradient(900px 500px at 100% 100%, #e4f4ec 0%, transparent 55%),
+        radial-gradient(700px 400px at 0% 80%, #ffe8d8 0%, transparent 50%),
+        var(--cream);
+      overflow-x: hidden;
+      transition: background 0.8s ease;
+    }
+
+    body.done {
+      background:
+        radial-gradient(900px 520px at 50% -8%, #ffc2d8 0%, transparent 58%),
+        radial-gradient(700px 480px at 100% 100%, #ffd8b8 0%, transparent 52%),
+        radial-gradient(640px 420px at 0% 80%, #f7d0ea 0%, transparent 50%),
+        #fff0f4;
+    }
+
+    button, input { font: inherit; }
+
+    .petals {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .balloons {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 6;
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -160px;
+      width: 54px;
+      height: 68px;
+      border-radius: 50% 50% 50% 50% / 46% 46% 54% 54%;
+      box-shadow:
+        inset 10px 12px 14px rgba(255, 255, 255, 0.38),
+        inset -8px -12px 12px rgba(90, 20, 40, 0.12);
+      animation-name: balloon-rise;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+      will-change: transform;
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      width: 1px;
+      height: var(--string, 70px);
+      margin-left: -0.5px;
+      background: rgba(156, 92, 78, 0.72);
+    }
+
+    @keyframes balloon-rise {
+      0% { transform: translate3d(0, 0, 0) rotate(-8deg); }
+      25% { transform: translate3d(18px, -34vh, 0) rotate(7deg); }
+      50% { transform: translate3d(-14px, -68vh, 0) rotate(-5deg); }
+      75% { transform: translate3d(16px, -102vh, 0) rotate(8deg); }
+      100% { transform: translate3d(0, -136vh, 0) rotate(-6deg); }
+    }
+
+    .petal {
+      position: absolute;
+      top: -12vh;
+      width: 12px;
+      height: 16px;
+      border-radius: 70% 10% 70% 10%;
+      opacity: 0.75;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
+      12% { opacity: 0.8; }
+      100% { transform: translate3d(40px, 110vh, 0) rotate(220deg); opacity: 0.15; }
+    }
+
+    .script {
+      font-family: "Great Vibes", cursive;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .wish {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 520px);
+      margin: 0 auto;
+      padding: max(28px, env(safe-area-inset-top)) 20px 64px;
+    }
+
+    .hero {
+      text-align: center;
+      padding-top: 12px;
+    }
+
+    .hero h1 {
+      margin: 8px 0 0;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(2.6rem, 8vw, 4rem);
+      line-height: 0.95;
+    }
+
+    .hero h1 .script {
+      display: block;
+      color: var(--rose-deep);
+      font-size: 0.72em;
+      line-height: 1.15;
+      padding-top: 0.18em;
+      margin-bottom: 2px;
+    }
+
+    .frame {
+      margin: 22px auto 0;
+      width: min(100%, 420px);
+      padding: 14px 14px 18px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      transition: padding 0.95s ease, background 0.95s ease, box-shadow 0.95s ease, border-radius 0.95s ease;
+    }
+
+    .stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1452 / 1600;
+    }
+
+    .solved-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(1.03);
+      transition: opacity 1.15s ease, transform 1.25s ease, border-radius 0.95s ease;
+    }
+
+    .stage.complete .solved-photo {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .flash {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      border-radius: 12px;
+      background: radial-gradient(circle, rgba(255, 248, 252, 0.92), rgba(255, 190, 214, 0.15) 55%, transparent 72%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .stage.complete .flash { animation: flash 1.3s ease forwards; }
+
+    @keyframes flash {
+      0% { opacity: 0; }
+      35% { opacity: 0.35; }
+      100% { opacity: 0; }
+    }
+
+    .burst {
+      position: fixed;
+      z-index: 20;
+      width: 9px;
+      height: 13px;
+      margin: -6px 0 0 -4px;
+      border-radius: 70% 10% 70% 10%;
+      pointer-events: none;
+      animation: burst 1.15s cubic-bezier(0.12, 0.7, 0.2, 1) forwards;
+    }
+
+    @keyframes burst {
+      0% { transform: translate3d(0, 0, 0) scale(0.3) rotate(0deg); opacity: 1; }
+      100% { transform: translate3d(var(--dx), var(--dy), 0) scale(1) rotate(240deg); opacity: 0; }
+    }
+
+    .board {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 5px;
+      transition: gap 0.95s ease, border-radius 0.95s ease;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .board.solved {
+      gap: 0;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .tile {
+      appearance: none;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      background-color: #f3d5df;
+      background-image: url("vaishnavi-web.jpg");
+      background-repeat: no-repeat;
+      background-size: 300% 400%;
+      cursor: grab;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+      transition: box-shadow 0.18s ease;
+    }
+
+    .tile.home {
+      box-shadow: inset 0 0 0 2px rgba(110, 161, 141, 0.85);
+    }
+
+    .tile.selected {
+      transform: scale(0.96);
+      box-shadow: inset 0 0 0 3px var(--rose), 0 10px 24px rgba(216, 59, 120, 0.28);
+      z-index: 2;
+    }
+
+    .tile.placeholder {
+      background-image: none;
+      background-color: #f7e3ea;
+      box-shadow: inset 0 0 0 2px rgba(216, 59, 120, 0.35);
+    }
+
+    .board.solved .tile {
+      border-radius: 0;
+      box-shadow: none;
+      cursor: default;
+      transform: scale(1.02);
+    }
+
+    .ghost {
+      position: fixed;
+      z-index: 40;
+      left: 0;
+      top: 0;
+      margin: 0;
+      pointer-events: none;
+      border-radius: 10px;
+      box-shadow: 0 18px 34px rgba(60, 36, 48, 0.28);
+      transition: none;
+      will-change: transform;
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      max-height: 48px;
+      margin-top: 14px;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 0.92rem;
+      opacity: 1;
+      transition: max-height 0.8s ease, opacity 0.45s ease, margin-top 0.8s ease;
+    }
+
+    .text-btn {
+      border: 0;
+      background: transparent;
+      color: var(--rose-deep);
+      padding: 6px 0;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .text-btn:hover { text-decoration: underline; }
+
+    .song-btn {
+      display: block;
+      margin: 22px auto 0;
+    }
+
+    body.done .frame {
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 28px;
+    }
+
+    body.done .stage,
+    body.done .solved-photo,
+    body.done .flash,
+    body.done .board.solved {
+      border-radius: 28px;
+    }
+
+    body.done .stage {
+      overflow: hidden;
+      box-shadow: 0 28px 70px rgba(120, 30, 60, 0.18);
+      transition: box-shadow 0.95s ease, border-radius 0.95s ease;
+    }
+
+    body.done .meta {
+      max-height: 0;
+      margin-top: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .toast {
+      display: grid;
+      grid-template-rows: 0fr;
+      max-width: 34ch;
+      margin: 0 auto;
+      padding: 0 22px;
+      text-align: center;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 24px;
+      box-shadow: none;
+      opacity: 0;
+      transition:
+        grid-template-rows 0.95s ease,
+        opacity 0.9s ease 0.25s,
+        margin-top 0.95s ease,
+        padding 0.95s ease,
+        background 0.95s ease,
+        border-color 0.95s ease,
+        box-shadow 0.95s ease;
+    }
+
+    .toast-clip { overflow: hidden; }
+
+    body.done .toast {
+      grid-template-rows: 1fr;
+      margin-top: 28px;
+      padding: 22px 22px 20px;
+      background: rgba(255, 252, 250, 0.88);
+      border-color: var(--line);
+      box-shadow: 0 16px 40px rgba(120, 30, 60, 0.08);
+      opacity: 1;
+    }
+
+    .toast p {
+      margin: 0;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(1.35rem, 4.2vw, 1.7rem);
+      line-height: 1.45;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+    }
+
+    .toast .cheer {
+      margin-top: 8px;
+      font-family: "Great Vibes", cursive;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: var(--rose-deep);
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 18px 0 0;
+      color: var(--rose);
+    }
+
+    .ornament span {
+      width: 56px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #e7a0b8, transparent);
+    }
+
+    [hidden] { display: none !important; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .petal, .burst, .balloon, .stage.complete .flash { animation: none; }
+      .solved-photo, .frame, .meta, .toast, .stage { transition: none; }
+      .tile { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="petals" id="petals" aria-hidden="true"></div>
+  <div class="balloons" id="balloons" aria-hidden="true"></div>
+
+  <main class="wish" id="wish">
+    <header class="hero">
+      <h1><span class="script">Happy Birthday</span>Vaishnavi</h1>
+      <div class="ornament" aria-hidden="true"><span></span>♥<span></span></div>
+    </header>
+
+      <div class="frame" id="frame">
+      <div class="stage" id="stage">
+        <div class="board" id="board" role="group" aria-label="Shuffled photo puzzle"></div>
+        <img class="solved-photo" id="solved-photo" alt="Vaishnavi smiling among pink bougainvillea" src="vaishnavi-web.jpg" aria-hidden="true">
+        <div class="flash" aria-hidden="true"></div>
+      </div>
+      <div class="meta">
+        <span id="progress">0 of 12 in place</span>
+        <button class="text-btn" id="shuffle" type="button">Shuffle</button>
+      </div>
+    </div>
+    <div class="toast" id="toast">
+      <div class="toast-clip">
+        <p>Another year, another chapter — wishing you happiness in every page and beautiful memories along the way.</p>
+      </div>
+    </div>
+    <button class="text-btn song-btn" id="play" type="button">Play</button>
+    <audio id="song" src="birthday.mp3" preload="auto"></audio>
+  </main>
+
+  <script>
+    const COLS = 3;
+    const ROWS = 4;
+    const COUNT = COLS * ROWS;
+
+    const board = document.getElementById("board");
+    const stage = document.getElementById("stage");
+    const solvedPhoto = document.getElementById("solved-photo");
+    const progress = document.getElementById("progress");
+    const frame = document.getElementById("frame");
+    const toast = document.getElementById("toast");
+    const shuffleBtn = document.getElementById("shuffle");
+
+    let order = [];
+    let selected = null;
+    let solved = false;
+    let moves = 0;
+    let drag = null;
+    let lastPointerHandled = 0;
+
+    function paintPetals(extra) {
+      const root = document.getElementById("petals");
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce) return;
+      const total = extra ? 28 : 16;
+      for (let i = 0; i < total; i++) {
+        const petal = document.createElement("span");
+        petal.className = "petal";
+        petal.style.left = Math.random() * 100 + "%";
+        petal.style.animationDuration = (extra ? 4 : 9) + Math.random() * (extra ? 3 : 8) + "s";
+        petal.style.animationDelay = extra ? "0s" : (-Math.random() * 12 + "s");
+        petal.style.background = ["#e85b90", "#f4a3c0", "#ef6f73", "#d7ecdf"][i % 4];
+        petal.style.width = 8 + Math.random() * 8 + "px";
+        petal.style.height = 11 + Math.random() * 10 + "px";
+        root.appendChild(petal);
+        if (extra) setTimeout(() => petal.remove(), 8000);
+      }
+    }
+
+    function shuffledOrder() {
+      const next = Array.from({ length: COUNT }, (_, i) => i);
+      for (let i = next.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [next[i], next[j]] = [next[j], next[i]];
+      }
+      const alreadyDone = next.every((value, index) => value === index);
+      return alreadyDone ? shuffledOrder() : next;
+    }
+
+    function clearGhosts() {
+      document.querySelectorAll(".ghost").forEach((node) => node.remove());
+    }
+
+    function unbindDrag() {
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerUp);
+    }
+
+    function setupPuzzle() {
+      unbindDrag();
+      drag = null;
+      clearGhosts();
+      order = shuffledOrder();
+      selected = null;
+      solved = false;
+      moves = 0;
+      stage.classList.remove("complete");
+      document.body.classList.remove("done");
+      solvedPhoto.setAttribute("aria-hidden", "true");
+      shuffleBtn.textContent = "Shuffle";
+      board.classList.remove("solved");
+      board.replaceChildren();
+      render();
+    }
+
+    function render() {
+      if (board.children.length !== COUNT) {
+        board.replaceChildren();
+        for (let index = 0; index < COUNT; index++) {
+          const tile = document.createElement("button");
+          tile.type = "button";
+          tile.className = "tile";
+          tile.addEventListener("pointerdown", onPointerDown);
+          board.appendChild(tile);
+        }
+      }
+      const tiles = board.children;
+      order.forEach((tileId, index) => {
+        const tile = tiles[index];
+        tile.className = "tile";
+        tile.dataset.index = String(index);
+        tile.dataset.tile = String(tileId);
+        tile.style.transform = "";
+        const col = tileId % COLS;
+        const row = Math.floor(tileId / COLS);
+        tile.style.backgroundPosition =
+          (col / (COLS - 1)) * 100 + "% " + (row / (ROWS - 1)) * 100 + "%";
+        if (!solved && tileId === index) tile.classList.add("home");
+        if (selected === index) tile.classList.add("selected");
+        const place = "row " + (row + 1) + ", column " + (col + 1);
+        tile.setAttribute("aria-label", solved ? "Photo piece in place, " + place : "Photo piece from " + place);
+      });
+      const placed = order.filter((value, index) => value === index).length;
+      progress.textContent = placed + " of " + COUNT + " in place · " + moves + (moves === 1 ? " move" : " moves");
+    }
+
+    function onPointerDown(event) {
+      if (solved || event.button > 0 || drag) return;
+      const tile = event.currentTarget;
+      const rect = tile.getBoundingClientRect();
+      drag = {
+        pointerId: event.pointerId,
+        index: Number(tile.dataset.index),
+        x: event.clientX,
+        y: event.clientY,
+        moved: false,
+        ghost: null,
+        tile,
+        offsetX: event.clientX - rect.left,
+        offsetY: event.clientY - rect.top
+      };
+      window.addEventListener("pointermove", onPointerMove, { passive: false });
+      window.addEventListener("pointerup", onPointerUp);
+      window.addEventListener("pointercancel", onPointerUp);
+    }
+
+    function onPointerMove(event) {
+      if (!drag || event.pointerId !== drag.pointerId) return;
+      const dx = event.clientX - drag.x;
+      const dy = event.clientY - drag.y;
+      if (!drag.moved && Math.hypot(dx, dy) < 8) return;
+      event.preventDefault();
+      if (!drag.moved) {
+        drag.moved = true;
+        const rect = drag.tile.getBoundingClientRect();
+        const ghost = drag.tile.cloneNode(false);
+        ghost.className = "tile ghost";
+        ghost.style.width = rect.width + "px";
+        ghost.style.height = rect.height + "px";
+        ghost.style.backgroundPosition = drag.tile.style.backgroundPosition;
+        document.body.appendChild(ghost);
+        drag.ghost = ghost;
+        drag.tile.classList.add("placeholder");
+      }
+      drag.ghost.style.transform =
+        "translate3d(" + (event.clientX - drag.offsetX) + "px," + (event.clientY - drag.offsetY) + "px,0) scale(1.04)";
+    }
+
+    function onPointerUp(event) {
+      if (!drag || (event && event.pointerId !== drag.pointerId)) return;
+      const from = drag.index;
+      const moved = drag.moved;
+      const ghost = drag.ghost;
+      if (ghost) ghost.style.pointerEvents = "none";
+      drag.tile.classList.remove("placeholder");
+
+      let dest = null;
+      if (moved && event) {
+        if (ghost) ghost.hidden = true;
+        const under = document.elementFromPoint(event.clientX, event.clientY);
+        const tile = under && under.closest ? under.closest(".tile") : null;
+        if (tile && tile.dataset.index != null && !tile.classList.contains("ghost")) {
+          dest = Number(tile.dataset.index);
+        }
+      }
+
+      unbindDrag();
+      clearGhosts();
+      drag = null;
+      lastPointerHandled = Date.now();
+
+      if (moved && dest != null && dest !== from) {
+        swap(from, dest);
+        return;
+      }
+      if (!moved) choose(from);
+      else render();
+    }
+
+    function choose(index) {
+      if (solved) return;
+      if (selected == null) {
+        selected = index;
+        render();
+        return;
+      }
+      if (selected === index) {
+        selected = null;
+        render();
+        return;
+      }
+      const origin = selected;
+      selected = null;
+      swap(origin, index);
+    }
+
+    board.addEventListener("click", (event) => {
+      if (Date.now() - lastPointerHandled < 500) return;
+      const tile = event.target.closest(".tile");
+      if (!tile) return;
+      choose(Number(tile.dataset.index));
+    });
+
+    function swap(a, b) {
+      [order[a], order[b]] = [order[b], order[a]];
+      moves += 1;
+      render();
+      if (order.every((value, index) => value === index)) finish();
+    }
+
+    function finish() {
+      unbindDrag();
+      drag = null;
+      clearGhosts();
+      solved = true;
+      selected = null;
+      board.classList.add("solved");
+      stage.classList.add("complete");
+      solvedPhoto.removeAttribute("aria-hidden");
+      render();
+      document.body.classList.add("done");
+      burst();
+      chime();
+      releaseBalloons();
+      playSong();
+    }
+
+    function releaseBalloons() {
+      if (window.__balloonsOn) return;
+      window.__balloonsOn = true;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const root = document.getElementById("balloons");
+      const colors = ["#ff7b9c", "#ffd56a", "#8fd0c4", "#f4a0c0", "#d7b4ff", "#ff8a7a"];
+      const sizes = [[54, 68], [46, 58], [32, 42], [38, 48], [28, 36], [50, 64]];
+      for (let i = 0; i < 8; i++) {
+        const [w, h] = sizes[i % sizes.length];
+        const balloon = document.createElement("span");
+        balloon.className = "balloon";
+        balloon.style.width = w + "px";
+        balloon.style.height = h + "px";
+        balloon.style.left = (5 + i * 11 + Math.random() * 3) + "%";
+        balloon.style.background = colors[i % colors.length];
+        balloon.style.animationDuration = (12 + (i % 4)) + "s";
+        balloon.style.animationDelay = ((i % 4) * 0.45) + "s";
+        balloon.style.setProperty("--string", Math.round(h * 1.15) + "px");
+        root.appendChild(balloon);
+      }
+    }
+
+    function burst() {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce) return;
+      const rect = stage.getBoundingClientRect();
+      const root = document.getElementById("petals");
+      const colors = ["#e85b90", "#f4a3c0", "#ffd36b", "#fff6f8", "#d7ecdf", "#ef6f73"];
+      for (let i = 0; i < 46; i++) {
+        const bit = document.createElement("span");
+        bit.className = "burst";
+        const angle = (Math.PI * 2 * i) / 46 + Math.random() * 0.4;
+        const dist = 90 + Math.random() * 240;
+        bit.style.left = rect.left + rect.width / 2 + "px";
+        bit.style.top = rect.top + rect.height * 0.42 + "px";
+        bit.style.background = colors[i % colors.length];
+        bit.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+        bit.style.setProperty("--dy", (Math.sin(angle) * dist * 0.65 + 40) + "px");
+        root.appendChild(bit);
+        setTimeout(() => bit.remove(), 1300);
+      }
+    }
+
+    function chime() {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        const start = ctx.currentTime + i * 0.14;
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.06, start + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.7);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(start);
+        osc.stop(start + 0.75);
+      });
+    }
+
+    const song = document.getElementById("song");
+    const playBtn = document.getElementById("play");
+
+    function setPlayLabel() {
+      playBtn.textContent = song.paused ? "Play" : "Pause";
+    }
+
+    function playSong() {
+      if (!song.paused) return;
+      if (song.ended) song.currentTime = 0;
+      song.volume = 1;
+      song.play().then(setPlayLabel).catch(() => {});
+    }
+
+    playBtn.addEventListener("click", () => {
+      if (song.paused) playSong();
+      else song.pause();
+    });
+    song.addEventListener("play", setPlayLabel);
+    song.addEventListener("pause", setPlayLabel);
+    song.addEventListener("ended", setPlayLabel);
+    song.loop = false;
+    song.volume = 1;
+    song.play().catch(() => {});
+
+    shuffleBtn.addEventListener("click", setupPuzzle);
+    window.addEventListener("blur", () => {
+      if (!drag) return;
+      unbindDrag();
+      drag = null;
+      clearGhosts();
+      render();
+    });
+
+    paintPetals(false);
+    setupPuzzle();
+  </script>
+</body>
+</html>
