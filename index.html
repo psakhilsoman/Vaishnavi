@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#fff6f3">
   <title>Happy Birthday, Vaishnavi</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta name="description" content="A birthday wish for Vaishnavi, with a photo to put back together.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -324,8 +325,29 @@
     .text-btn:hover { text-decoration: underline; }
 
     .song-btn {
-      display: block;
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
       margin: 22px auto 0;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--rose-deep);
+      box-shadow: 0 8px 22px rgba(90, 30, 55, 0.12);
+      cursor: pointer;
+    }
+
+    .song-btn svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+
+    .song-btn.is-on {
+      background: var(--rose);
+      color: #fff;
     }
 
     body.done .frame {
@@ -463,10 +485,15 @@
         <p>Another year, another chapter — wishing you happiness in every page and beautiful memories along the way.</p>
       </div>
     </div>
-    <button class="text-btn song-btn" id="play" type="button">Play</button>
+    <button class="song-btn" id="play" type="button" aria-label="Play song">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" d="M9.2 17.6a2.35 2.35 0 1 1-1.85-2.3V5.9l9.4-1.9v8.7a2.35 2.35 0 1 1-1.85-2.3V6.7l-5.7 1.15v9.75z"/>
+      </svg>
+    </button>
     <audio id="song" src="birthday.mp3" preload="auto"></audio>
   </main>
 
+  <script src="butterfly.js"></script>
   <script>
     const COLS = 3;
     const ROWS = 4;
@@ -692,6 +719,7 @@
       burst();
       chime();
       releaseBalloons();
+      if (window.startButterfly) startButterfly();
       playSong();
     }
 
@@ -762,7 +790,9 @@
     const playBtn = document.getElementById("play");
 
     function setPlayLabel() {
-      playBtn.textContent = song.paused ? "Play" : "Pause";
+      const playing = !song.paused;
+      playBtn.classList.toggle("is-on", playing);
+      playBtn.setAttribute("aria-label", playing ? "Pause song" : "Play song");
     }
 
     function playSong() {
@@ -775,6 +805,7 @@
     playBtn.addEventListener("click", () => {
       if (song.paused) playSong();
       else song.pause();
+      setPlayLabel();
     });
     song.addEventListener("play", setPlayLabel);
     song.addEventListener("pause", setPlayLabel);
