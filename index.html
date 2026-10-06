@@ -69,21 +69,18 @@
       inset: 0;
       pointer-events: none;
       overflow: hidden;
-      z-index: 6;
+      z-index: 0;
     }
 
     .balloon {
       position: absolute;
-      bottom: -160px;
+      bottom: -150px;
       width: 54px;
       height: 68px;
       border-radius: 50% 50% 50% 50% / 46% 46% 54% 54%;
-      box-shadow:
-        inset 10px 12px 14px rgba(255, 255, 255, 0.38),
-        inset -8px -12px 12px rgba(90, 20, 40, 0.12);
       animation-name: balloon-rise;
       animation-timing-function: linear;
-      animation-fill-mode: forwards;
+      animation-iteration-count: infinite;
     }
 
     .balloon::after {
@@ -92,17 +89,61 @@
       left: 50%;
       top: 100%;
       width: 1px;
-      height: var(--string, 70px);
-      margin-left: -0.5px;
-      background: rgba(156, 92, 78, 0.72);
+      height: 70px;
+      background: rgba(156, 92, 78, 0.55);
+    }
+
+    .balloon-a {
+      left: 4%;
+      background: #ff7b6b;
+      animation-duration: 11s;
+      animation-delay: -2s;
+    }
+
+    .balloon-b {
+      right: 6%;
+      left: auto;
+      background: #ffd56a;
+      width: 46px;
+      height: 58px;
+      animation-duration: 14s;
+      animation-delay: -8s;
+    }
+
+    .balloon-c {
+      left: 18%;
+      background: #7ec8ff;
+      width: 32px;
+      height: 42px;
+      animation-duration: 16s;
+      animation-delay: -5s;
+    }
+
+    .balloon-d {
+      right: 20%;
+      left: auto;
+      background: #f4a0c0;
+      width: 38px;
+      height: 48px;
+      animation-duration: 13s;
+      animation-delay: -11s;
+    }
+
+    .balloon-e {
+      left: 72%;
+      background: #d7b4ff;
+      width: 28px;
+      height: 36px;
+      animation-duration: 15s;
+      animation-delay: -1s;
     }
 
     @keyframes balloon-rise {
       0% { transform: translate3d(0, 0, 0) rotate(-8deg); }
-      25% { transform: translate3d(18px, -34vh, 0) rotate(7deg); }
-      50% { transform: translate3d(-14px, -68vh, 0) rotate(-5deg); }
-      75% { transform: translate3d(16px, -102vh, 0) rotate(8deg); }
-      100% { transform: translate3d(0, -136vh, 0) rotate(-6deg); }
+      25% { transform: translate3d(18px, -32vh, 0) rotate(7deg); }
+      50% { transform: translate3d(-14px, -64vh, 0) rotate(-5deg); }
+      75% { transform: translate3d(16px, -96vh, 0) rotate(8deg); }
+      100% { transform: translate3d(0, -130vh, 0) rotate(-6deg); }
     }
 
     .petal {
@@ -452,6 +493,11 @@
 
     [hidden] { display: none !important; }
 
+    @media (max-width: 420px) {
+      .balloon-c,
+      .balloon-e { display: none; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .petal, .burst, .balloon, .stage.complete .flash { animation: none; }
       .solved-photo, .frame, .meta, .toast, .stage { transition: none; }
@@ -461,7 +507,13 @@
 </head>
 <body>
   <div class="petals" id="petals" aria-hidden="true"></div>
-  <div class="balloons" id="balloons" aria-hidden="true"></div>
+  <div class="balloons" aria-hidden="true">
+    <span class="balloon balloon-a"></span>
+    <span class="balloon balloon-b"></span>
+    <span class="balloon balloon-c"></span>
+    <span class="balloon balloon-d"></span>
+    <span class="balloon balloon-e"></span>
+  </div>
 
   <main class="wish" id="wish">
     <header class="hero">
@@ -493,7 +545,6 @@
     <audio id="song" src="kohinoor-hemanthamen-song-video-ft-asif-ali-aparna-rahul-raj-official_LEavGSxg.mp3" preload="none"></audio>
   </main>
 
-  <script src="butterfly.js"></script>
   <script>
     const COLS = 3;
     const ROWS = 4;
@@ -716,30 +767,6 @@
       document.body.classList.add("done");
       burst();
       chime();
-      releaseBalloons();
-      if (window.startButterfly) startButterfly();
-    }
-
-    function releaseBalloons() {
-      if (window.__balloonsOn) return;
-      window.__balloonsOn = true;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      const root = document.getElementById("balloons");
-      const colors = ["#ff7b9c", "#ffd56a", "#8fd0c4", "#f4a0c0", "#d7b4ff", "#ff8a7a"];
-      const sizes = [[54, 68], [46, 58], [32, 42], [38, 48], [28, 36], [50, 64]];
-      for (let i = 0; i < 8; i++) {
-        const [w, h] = sizes[i % sizes.length];
-        const balloon = document.createElement("span");
-        balloon.className = "balloon";
-        balloon.style.width = w + "px";
-        balloon.style.height = h + "px";
-        balloon.style.left = (5 + i * 11 + Math.random() * 3) + "%";
-        balloon.style.background = colors[i % colors.length];
-        balloon.style.animationDuration = (12 + (i % 4)) + "s";
-        balloon.style.animationDelay = ((i % 4) * 0.45) + "s";
-        balloon.style.setProperty("--string", Math.round(h * 1.15) + "px");
-        root.appendChild(balloon);
-      }
     }
 
     function burst() {
