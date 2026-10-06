@@ -61,6 +61,7 @@
       pointer-events: none;
       overflow: hidden;
       z-index: 0;
+      contain: paint;
     }
 
     .balloons {
@@ -83,7 +84,6 @@
       animation-name: balloon-rise;
       animation-timing-function: linear;
       animation-fill-mode: forwards;
-      will-change: transform;
     }
 
     .balloon::after {
@@ -472,7 +472,7 @@
       <div class="frame" id="frame">
       <div class="stage" id="stage">
         <div class="board" id="board" role="group" aria-label="Shuffled photo puzzle"></div>
-        <img class="solved-photo" id="solved-photo" alt="Vaishnavi smiling among pink bougainvillea" src="vaishnavi-web.jpg" aria-hidden="true">
+        <img class="solved-photo" id="solved-photo" alt="Vaishnavi smiling among pink bougainvillea" src="vaishnavi-web.jpg" decoding="async" aria-hidden="true">
         <div class="flash" aria-hidden="true"></div>
       </div>
       <div class="meta">
@@ -490,7 +490,7 @@
         <path fill="currentColor" d="M9.2 17.6a2.35 2.35 0 1 1-1.85-2.3V5.9l9.4-1.9v8.7a2.35 2.35 0 1 1-1.85-2.3V6.7l-5.7 1.15v9.75z"/>
       </svg>
     </button>
-    <audio id="song" src="birthday.mp3" preload="auto"></audio>
+    <audio id="song" src="kohinoor-hemanthamen-song-video-ft-asif-ali-aparna-rahul-raj-official_LEavGSxg.mp3" preload="none"></audio>
   </main>
 
   <script src="butterfly.js"></script>
@@ -514,22 +514,20 @@
     let drag = null;
     let lastPointerHandled = 0;
 
-    function paintPetals(extra) {
+    function paintPetals() {
       const root = document.getElementById("petals");
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduce) return;
-      const total = extra ? 28 : 16;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const total = window.innerWidth < 700 ? 6 : 8;
       for (let i = 0; i < total; i++) {
         const petal = document.createElement("span");
         petal.className = "petal";
         petal.style.left = Math.random() * 100 + "%";
-        petal.style.animationDuration = (extra ? 4 : 9) + Math.random() * (extra ? 3 : 8) + "s";
-        petal.style.animationDelay = extra ? "0s" : (-Math.random() * 12 + "s");
+        petal.style.animationDuration = 11 + Math.random() * 7 + "s";
+        petal.style.animationDelay = -Math.random() * 12 + "s";
         petal.style.background = ["#e85b90", "#f4a3c0", "#ef6f73", "#d7ecdf"][i % 4];
-        petal.style.width = 8 + Math.random() * 8 + "px";
-        petal.style.height = 11 + Math.random() * 10 + "px";
+        petal.style.width = 8 + Math.random() * 6 + "px";
+        petal.style.height = 11 + Math.random() * 8 + "px";
         root.appendChild(petal);
-        if (extra) setTimeout(() => petal.remove(), 8000);
       }
     }
 
@@ -720,7 +718,6 @@
       chime();
       releaseBalloons();
       if (window.startButterfly) startButterfly();
-      playSong();
     }
 
     function releaseBalloons() {
@@ -751,10 +748,10 @@
       const rect = stage.getBoundingClientRect();
       const root = document.getElementById("petals");
       const colors = ["#e85b90", "#f4a3c0", "#ffd36b", "#fff6f8", "#d7ecdf", "#ef6f73"];
-      for (let i = 0; i < 46; i++) {
+      for (let i = 0; i < 18; i++) {
         const bit = document.createElement("span");
         bit.className = "burst";
-        const angle = (Math.PI * 2 * i) / 46 + Math.random() * 0.4;
+        const angle = (Math.PI * 2 * i) / 18 + Math.random() * 0.4;
         const dist = 90 + Math.random() * 240;
         bit.style.left = rect.left + rect.width / 2 + "px";
         bit.style.top = rect.top + rect.height * 0.42 + "px";
@@ -812,7 +809,6 @@
     song.addEventListener("ended", setPlayLabel);
     song.loop = false;
     song.volume = 1;
-    song.play().catch(() => {});
 
     shuffleBtn.addEventListener("click", setupPuzzle);
     window.addEventListener("blur", () => {
@@ -823,7 +819,7 @@
       render();
     });
 
-    paintPetals(false);
+      paintPetals();
     setupPuzzle();
   </script>
 </body>

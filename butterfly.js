@@ -5,20 +5,37 @@ window.startButterfly = function () {
 
   const canvas = document.createElement("canvas");
   canvas.setAttribute("aria-hidden", "true");
-  canvas.style.cssText = "position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:8;";
+  canvas.style.cssText = "position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:8;contain:strict;";
   document.body.appendChild(canvas);
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
+  const coarse = matchMedia("(pointer: coarse)").matches;
 
   let W = 0, H = 0;
+  let scrolling = false;
+  let scrollTimer = 0;
   function resize() {
     W = innerWidth;
     H = innerHeight;
-    canvas.width = W * devicePixelRatio;
-    canvas.height = H * devicePixelRatio;
-    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    const ratio = 1;
+    canvas.width = Math.round(W * ratio);
+    canvas.height = Math.round(H * ratio);
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
   }
   resize();
   addEventListener("resize", resize);
+  function markScroll() {
+    if (!scrolling) {
+      scrolling = true;
+      canvas.style.visibility = "hidden";
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      scrolling = false;
+      canvas.style.visibility = "";
+    }, 180);
+  }
+  addEventListener("scroll", markScroll, { passive: true });
+  addEventListener("touchmove", markScroll, { passive: true });
 
   const TAU = Math.PI * 2;
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -86,6 +103,7 @@ window.startButterfly = function () {
   }
 
   function trackPointer(e) {
+    if (coarse || e.pointerType === "touch") return;
     inDoc = true;
     if (!ready) {
       placeAtCursor(e.clientX, e.clientY);
@@ -97,7 +115,7 @@ window.startButterfly = function () {
   }
   addEventListener("pointermove", trackPointer, { passive: true });
   addEventListener("pointerenter", trackPointer, { passive: true });
-  document.documentElement.addEventListener("mouseleave", () => { inDoc = false; });
+  document.documentElement.addEventListener("mouseleave", () => { if (!coarse) inDoc = false; });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) inDoc = false;
   });
@@ -163,9 +181,7 @@ window.startButterfly = function () {
     ctx.closePath();
   }
 
-  function drawWing(shape, veins, side, flap, sweep) {
-    const pts = wingPts(shape, side, flap, sweep);
-    const zAvg = pts.reduce((s, p) => s + p.z, 0) / pts.length;
+  function drawWing(pts, flap) {
     const tip = pts[3];
     const root = pts[0];
     const g = ctx.createLinearGradient(root.x, root.y, tip.x, tip.y);
@@ -175,39 +191,22 @@ window.startButterfly = function () {
     g.addColorStop(1, rgb(wingColor(flap, 1)));
 
     ctx.save();
-    ctx.shadowColor = rgb(wingColor(flap, 0.2), 0.28);
-    ctx.shadowBlur = 12;
     smoothPath(pts);
     ctx.fillStyle = g;
     ctx.fill();
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = "rgba(78,22,46,0.28)";
+    ctx.strokeStyle = "rgba(78,22,46,0.22)";
     ctx.lineWidth = 1;
     ctx.stroke();
-
-    ctx.globalAlpha = (0.16 + 0.22 * Math.abs(Math.cos(flap))) * shown;
-    ctx.strokeStyle = "#fff0f4";
-    ctx.lineWidth = 0.65;
-    ctx.lineCap = "round";
-    for (const v of veins) {
-      const a = toScreen(rotX(rotZ([v[0][0], v[0][1] * side, v[0][2]], sweep * side), flap * side));
-      const d = toScreen(rotX(rotZ([v[1][0], v[1][1] * side, v[1][2]], sweep * side), flap * side));
-      ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.quadraticCurveTo(lerp(a.x, d.x, 0.5) + side * 2, lerp(a.y, d.y, 0.45), d.x, d.y);
-      ctx.stroke();
-    }
     ctx.globalAlpha = (0.22 + 0.2 * Math.abs(Math.cos(flap))) * shown;
     ctx.fillStyle = "#fff6f3";
     ctx.beginPath();
     ctx.arc(lerp(root.x, tip.x, 0.34), lerp(root.y, tip.y, 0.3), 4.2 * SCALE, 0, TAU);
     ctx.fill();
     ctx.restore();
-    return zAvg;
   }
 
   function spawnDust(power) {
-    const n = 1 + (power * 6) | 0;
+    const n = 1;
     const back = b.heading + Math.PI;
     for (let i = 0; i < n; i++) {
       const k = Math.random();
@@ -224,7 +223,7 @@ window.startButterfly = function () {
         color: k > 0.55 ? "rgba(216,59,120," : (k > 0.28 ? "rgba(255,196,214," : "rgba(184,137,61,")
       });
     }
-    if (dust.length > 280) dust.splice(0, dust.length - 280);
+    if (dust.length > 28) dust.splice(0, dust.length - 28);
   }
 
   function strokeAngle(phase) {
@@ -246,7 +245,7 @@ window.startButterfly = function () {
     if (mouseDist > 1) idleTime = 0;
     else idleTime += dt;
 
-    const targetWander = idleTime > 1.5 ? 1 : 0;
+    const targetWander = coarse || idleTime > 1.5 ? 1 : 0;
     wanderBlend = lerp(wanderBlend, targetWander, dt * 1.5);
     const wanderX = (Math.sin(t * 0.8) * 110 + Math.sin(t * 0.35) * 160) * wanderBlend;
     const wanderY = (Math.cos(t * 0.6) * 90 + Math.sin(t * 0.45) * 140) * wanderBlend;
@@ -293,7 +292,7 @@ window.startButterfly = function () {
     b.x = clamp(b.x, 24, W - 24);
     b.y = clamp(b.y, 24, H - 24);
 
-    if (shown > 0.45) spawnDust(clamp(0.15 + down * 0.6, 0.1, 1));
+    if (shown > 0.45 && down > 0.25) spawnDust(0.4);
   }
 
   function drawDust() {
@@ -329,14 +328,15 @@ window.startButterfly = function () {
     const head = toScreen([15, 0, 4]);
     const mid = toScreen([-8, 0, 2]);
     const tail = toScreen([-24, 0, 1]);
-    const glow = ctx.createRadialGradient(thorax.x, thorax.y, 2 * SCALE, thorax.x, thorax.y, 46 * SCALE);
-    glow.addColorStop(0, "rgba(216,59,120,0.22)");
-    glow.addColorStop(0.45, "rgba(255,196,214,0.08)");
-    glow.addColorStop(1, "rgba(255,246,243,0)");
-    ctx.fillStyle = glow;
-    ctx.beginPath();
-    ctx.arc(thorax.x, thorax.y, 46 * SCALE, 0, TAU);
-    ctx.fill();
+    if (!coarse) {
+      const glow = ctx.createRadialGradient(thorax.x, thorax.y, 2 * SCALE, thorax.x, thorax.y, 36 * SCALE);
+      glow.addColorStop(0, "rgba(216,59,120,0.18)");
+      glow.addColorStop(1, "rgba(255,246,243,0)");
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(thorax.x, thorax.y, 36 * SCALE, 0, TAU);
+      ctx.fill();
+    }
 
     ctx.lineCap = "round";
     ctx.strokeStyle = "#3c2430";
@@ -371,8 +371,20 @@ window.startButterfly = function () {
   }
 
   let last = performance.now();
+  let lastPaint = 0;
+  const frameGap = coarse ? 40 : 16;
   function frame(now) {
-    const dt = clamp((now - last) / 1000, 0.001, 0.033);
+    if (scrolling) {
+      last = now;
+      requestAnimationFrame(frame);
+      return;
+    }
+    if (now - lastPaint < frameGap) {
+      requestAnimationFrame(frame);
+      return;
+    }
+    lastPaint = now;
+    const dt = clamp((now - last) / 1000, 0.001, 0.05);
     last = now;
     ctx.clearRect(0, 0, W, H);
     if (!ready) {
@@ -399,7 +411,7 @@ window.startButterfly = function () {
     ].map((w) => {
       const pts = wingPts(w.shape, w.side, w.flap, w.sweep);
       const z = pts.reduce((s, p) => s + p.z, 0) / pts.length;
-      return { ...w, z };
+      return { ...w, z, pts };
     }).sort((a, c) => a.z - c.z);
 
     let bodyDrawn = false;
@@ -409,7 +421,7 @@ window.startButterfly = function () {
         drawBody();
         bodyDrawn = true;
       }
-      drawWing(w.shape, w.veins, w.side, w.flap, w.sweep);
+      drawWing(w.pts, w.flap);
     }
     if (!bodyDrawn) drawBody();
     ctx.restore();
